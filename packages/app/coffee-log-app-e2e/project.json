@@ -1,5 +1,5 @@
 {
-  "name": "app-coffee-log-app-e2e",
+  "name": "coffee-log-app-e2e",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/app/coffee-log-app-e2e/src",
   "projectType": "application",
@@ -8,12 +8,12 @@
       "executor": "@nrwl/cypress:cypress",
       "options": {
         "cypressConfig": "packages/app/coffee-log-app-e2e/cypress.config.ts",
-        "devServerTarget": "app-coffee-log-app:serve:development",
+        "devServerTarget": "coffee-log-app:serve:development",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "app-coffee-log-app:serve:production"
+          "devServerTarget": "coffee-log-app:serve:production"
         }
       }
     },
@@ -26,5 +26,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": ["app-coffee-log-app"]
+  "implicitDependencies": ["coffee-log-app"]
 }

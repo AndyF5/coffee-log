@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "prod": "coffee-log-ea596"
+  },
+  "targets": {
+    "coffee-log-ea596": {
+      "hosting": {
+        "coffee-log": [
+          "coffee-log-ea596"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

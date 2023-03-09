@@ -1,6 +1,6 @@
 import { getGreeting } from '../support/app.po';
 
-describe('app-coffee-log-app', () => {
+describe('coffee-log-app', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {

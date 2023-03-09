@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'app-coffee-log-app',
+  displayName: 'coffee-log-app',
   preset: '../../../jest.preset.js',
   transform: {
     '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': '@nrwl/react/plugins/jest',

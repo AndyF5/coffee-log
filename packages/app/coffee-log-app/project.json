@@ -1,5 +1,5 @@
 {
-  "name": "app-coffee-log-app",
+  "name": "coffee-log-app",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/app/coffee-log-app/src",
   "projectType": "application",
@@ -51,15 +51,15 @@
       "executor": "@nrwl/webpack:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "app-coffee-log-app:build",
+        "buildTarget": "coffee-log-app:build",
         "hmr": true
       },
       "configurations": {
         "development": {
-          "buildTarget": "app-coffee-log-app:build:development"
+          "buildTarget": "coffee-log-app:build:development"
         },
         "production": {
-          "buildTarget": "app-coffee-log-app:build:production",
+          "buildTarget": "coffee-log-app:build:production",
           "hmr": false
         }
       }
