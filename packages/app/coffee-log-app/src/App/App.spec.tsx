@@ -2,6 +2,13 @@ import { render } from '@testing-library/react';
 
 import App from './App';
 
+jest.mock('firebase/auth', () => {
+  return {
+    getAuth: jest.fn(),
+    onAuthStateChanged: jest.fn(),
+  };
+});
+
 describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(<App />);

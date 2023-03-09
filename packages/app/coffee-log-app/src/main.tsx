@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
-
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import App from './App/App';
 
 const firebaseConfig = {
@@ -15,7 +15,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+
+if (process.env.NODE_ENV === 'development') {
+  const auth = getAuth(app);
+  connectAuthEmulator(auth, 'http://localhost:9099');
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
