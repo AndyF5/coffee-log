@@ -1,9 +1,8 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
-
-import App from './App/App';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import App from './App/App';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBNIKoHyXp1gCDXPAdhzsQL1MJoTAAGxUA',
