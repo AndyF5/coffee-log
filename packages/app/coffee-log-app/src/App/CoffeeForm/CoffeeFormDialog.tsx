@@ -24,10 +24,10 @@ import { getAuth } from '@firebase/auth';
 
 interface CoffeeFormDialogProps {
   open: boolean;
-  setOpen: React.Dispatch<SetStateAction<boolean>>;
+  onClose: VoidFunction;
 }
 
-const CoffeeFormDialog = ({ open, setOpen }: CoffeeFormDialogProps) => {
+const CoffeeFormDialog = ({ open, onClose }: CoffeeFormDialogProps) => {
   const [brewFormState, setBrewFormState] = useState(defaultBrewForm);
   const [loading, setLoading] = useState(false);
 
@@ -57,23 +57,23 @@ const CoffeeFormDialog = ({ open, setOpen }: CoffeeFormDialogProps) => {
 
       setBrewFormState(defaultBrewForm);
 
-      setOpen(false);
+      onClose();
     }
 
     setLoading(false);
   };
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)}>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Coffee Logger</DialogTitle>
-      <DialogContent sx={{ padding: 1 }}>
+      <DialogContent>
         <DialogContentText>
           Enter your coffee information here!
         </DialogContentText>
         <CoffeeForm brew={brewFormState} setBrew={setBrewFormState} />
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(false)} disabled={loading}>
+        <Button onClick={() => onClose()} disabled={loading}>
           Cancel
         </Button>
         <Button onClick={() => onSave()} disabled={loading}>

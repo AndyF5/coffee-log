@@ -94,7 +94,7 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
             temperature: e.target.value,
           }))
         }
-        label="Temperature (C)"
+        label="Temperature (&#176;C)"
         name="temperature"
         type="text"
         inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}

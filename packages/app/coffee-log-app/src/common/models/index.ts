@@ -1,4 +1,4 @@
-import { Brew, BrewForm, defaultBrewForm } from './Brew';
+import { Brew, BrewForm, BrewWithID, defaultBrewForm } from './Brew';
 import { FirestoreCollections } from './Firestore';
 
-export { Brew, BrewForm, defaultBrewForm, FirestoreCollections };
+export { Brew, BrewForm, BrewWithID, defaultBrewForm, FirestoreCollections };

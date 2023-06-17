@@ -14,6 +14,10 @@ export interface Brew {
   date: Timestamp;
 }
 
+export interface BrewWithID extends Brew {
+  id: string;
+}
+
 export interface BrewForm {
   brewMethod: string | null;
   coffee: string;
