@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import CoffeeIcon from '@mui/icons-material/Coffee';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { User, getAuth } from 'firebase/auth';
 import React, { useState } from 'react';
 import CoffeeFormDialog from '../CoffeeForm/CoffeeFormDialog';

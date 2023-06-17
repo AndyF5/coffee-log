@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Rating, TextField } from '@mui/material';
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction } from 'react';
 import { BrewForm } from '../../common/models';
 
 interface CoffeeFormProps {

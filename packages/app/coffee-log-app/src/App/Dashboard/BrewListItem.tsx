@@ -1,13 +1,5 @@
-import {
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Rating,
-} from '@mui/material';
+import { ListItem, ListItemButton, ListItemText, Rating } from '@mui/material';
 import { BrewWithID } from '../../common/models';
-import PageviewIcon from '@mui/icons-material/Pageview';
 
 interface BrewListItemProps {
   brew: BrewWithID;

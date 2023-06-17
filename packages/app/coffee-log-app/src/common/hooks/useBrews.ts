@@ -3,7 +3,6 @@ import { Brew, BrewWithID, FirestoreCollections } from '../models';
 import { Unsubscribe, getAuth } from '@firebase/auth';
 import {
   collection,
-  doc,
   getFirestore,
   limit,
   onSnapshot,
