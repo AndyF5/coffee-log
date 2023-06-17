@@ -1,31 +1,30 @@
 import { Autocomplete, Box, Rating, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
+import { BrewForm } from '../../common/models';
 
-const CoffeeForm = () => {
-  const [coffeeType, setCoffeeType] = useState('');
-  const [coffee, setCoffee] = useState('');
-  const [coffeeAmount, setCoffeeAmount] = useState('18.0');
-  const [waterAmount, setWaterAmount] = useState('36.0');
-  const [temperature, setTemperature] = useState('93.0');
-  const [notes, setNotes] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [rating, setRating] = useState<number | null>(3);
+interface CoffeeFormProps {
+  brew: BrewForm;
+  setBrew: React.Dispatch<SetStateAction<BrewForm>>;
+}
 
+const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
   return (
     <Box>
-      <TextField
-        value={coffeeType}
-        onChange={(e) => setCoffeeType(e.currentTarget.value)}
-        label="Type of Coffee"
-        name="type"
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
+      <Autocomplete
+        id="tags"
+        value={brew.brewMethod}
+        freeSolo
+        onChange={(e, newValue) =>
+          setBrew((current) => ({ ...current, brewMethod: newValue }))
+        }
+        options={['Espresso', 'Filter']}
+        renderInput={(params) => <TextField {...params} label="Brew Method" />}
       />
       <TextField
-        value={coffee}
-        onChange={(e) => setCoffee(e.currentTarget.value)}
+        value={brew.coffee}
+        onChange={(e) =>
+          setBrew((current) => ({ ...current, coffee: e.currentTarget.value }))
+        }
         label="Coffee"
         name="coffee"
         fullWidth
@@ -34,9 +33,14 @@ const CoffeeForm = () => {
         }}
       />
       <TextField
-        value={coffeeAmount}
-        onChange={(e) => setCoffeeAmount(e.currentTarget.value)}
-        label="Amount of Coffee"
+        value={brew.coffeeAmount}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            coffeeAmount: parseFloat(e.currentTarget.value),
+          }))
+        }
+        label="Amount of Coffee (grams)"
         name="coffee-amount"
         type="number"
         inputProps={{
@@ -48,9 +52,33 @@ const CoffeeForm = () => {
         }}
       />
       <TextField
-        value={waterAmount}
-        onChange={(e) => setWaterAmount(e.currentTarget.value)}
-        label="Amount of Water"
+        value={brew.grindSetting}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            grindSetting: parseFloat(e.currentTarget.value),
+          }))
+        }
+        label="Grind Setting"
+        name="grind-setting"
+        type="number"
+        inputProps={{
+          step: '0.1',
+        }}
+        fullWidth
+        sx={{
+          marginY: 1,
+        }}
+      />
+      <TextField
+        value={brew.waterAmount}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            waterAmount: parseFloat(e.currentTarget.value),
+          }))
+        }
+        label="Amount of Water (ml/grams)"
         name="water-amount"
         type="number"
         inputProps={{
@@ -62,9 +90,14 @@ const CoffeeForm = () => {
         }}
       />
       <TextField
-        value={temperature}
-        onChange={(e) => setTemperature(e.currentTarget.value)}
-        label="Temperature"
+        value={brew.temperature}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            temperature: parseFloat(e.currentTarget.value),
+          }))
+        }
+        label="Temperature (C)"
         name="temperature"
         type="number"
         inputProps={{
@@ -76,8 +109,13 @@ const CoffeeForm = () => {
         }}
       />
       <TextField
-        value={notes}
-        onChange={(e) => setNotes(e.currentTarget.value)}
+        value={brew.notes}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            notes: e.currentTarget.value,
+          }))
+        }
         label="Notes"
         name="notes"
         multiline
@@ -90,17 +128,22 @@ const CoffeeForm = () => {
       <Autocomplete
         multiple
         id="tags"
-        value={tags}
+        value={brew.tags}
         freeSolo
-        onChange={(e, newValue) => setTags(newValue)}
+        onChange={(e, newValue) =>
+          setBrew((current) => ({
+            ...current,
+            tags: newValue,
+          }))
+        }
         options={['Sweet', 'Bitter']}
         renderInput={(params) => <TextField {...params} label="Tags" />}
       />
       <Rating
         name="rating"
-        value={rating}
+        value={brew.rating}
         onChange={(event, newValue) => {
-          setRating(newValue);
+          setBrew((current) => ({ ...current, rating: newValue ?? 0 }));
         }}
         sx={{
           marginY: 1,

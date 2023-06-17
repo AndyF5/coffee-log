@@ -15,6 +15,7 @@ import CoffeeIcon from '@mui/icons-material/Coffee';
 import { User, getAuth } from 'firebase/auth';
 import React, { useState } from 'react';
 import CoffeeForm from '../CoffeeForm/CoffeeForm';
+import CoffeeFormDialog from '../CoffeeForm/CoffeeFormDialog';
 
 interface DashboardProps {
   user: User;
@@ -57,22 +58,7 @@ const Dashboard = ({ user }: DashboardProps) => {
           tooltipTitle={'Log a Coffee'}
         />
       </SpeedDial>
-      <Dialog
-        open={openCoffeeLogger}
-        onClose={() => setOpenCoffeeLogger(false)}
-      >
-        <DialogTitle>Coffee Logger</DialogTitle>
-        <DialogContent sx={{ padding: 1 }}>
-          <DialogContentText>
-            Enter your coffee information here!
-          </DialogContentText>
-          <CoffeeForm />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenCoffeeLogger(false)}>Cancel</Button>
-          <Button onClick={onCoffeeLoggerSave}>Save</Button>
-        </DialogActions>
-      </Dialog>
+      <CoffeeFormDialog open={openCoffeeLogger} setOpen={setOpenCoffeeLogger} />
     </Box>
   );
 };
