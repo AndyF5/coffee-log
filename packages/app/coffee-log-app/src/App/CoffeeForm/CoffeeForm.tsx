@@ -19,11 +19,14 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         }
         options={['Espresso', 'Filter']}
         renderInput={(params) => <TextField {...params} label="Brew Method" />}
+        sx={{
+          marginY: 1,
+        }}
       />
       <TextField
         value={brew.coffee}
         onChange={(e) =>
-          setBrew((current) => ({ ...current, coffee: e.currentTarget.value }))
+          setBrew((current) => ({ ...current, coffee: e.target.value }))
         }
         label="Coffee"
         name="coffee"
@@ -37,15 +40,13 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         onChange={(e) =>
           setBrew((current) => ({
             ...current,
-            coffeeAmount: parseFloat(e.currentTarget.value),
+            coffeeAmount: e.target.value,
           }))
         }
         label="Amount of Coffee (grams)"
         name="coffee-amount"
-        type="number"
-        inputProps={{
-          step: '0.1',
-        }}
+        type="text"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         fullWidth
         sx={{
           marginY: 1,
@@ -56,15 +57,13 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         onChange={(e) =>
           setBrew((current) => ({
             ...current,
-            grindSetting: parseFloat(e.currentTarget.value),
+            grindSetting: e.target.value,
           }))
         }
         label="Grind Setting"
         name="grind-setting"
-        type="number"
-        inputProps={{
-          step: '0.1',
-        }}
+        type="text"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         fullWidth
         sx={{
           marginY: 1,
@@ -75,15 +74,13 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         onChange={(e) =>
           setBrew((current) => ({
             ...current,
-            waterAmount: parseFloat(e.currentTarget.value),
+            waterAmount: e.target.value,
           }))
         }
         label="Amount of Water (ml/grams)"
         name="water-amount"
-        type="number"
-        inputProps={{
-          step: '0.1',
-        }}
+        type="text"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         fullWidth
         sx={{
           marginY: 1,
@@ -94,15 +91,31 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         onChange={(e) =>
           setBrew((current) => ({
             ...current,
-            temperature: parseFloat(e.currentTarget.value),
+            temperature: e.target.value,
           }))
         }
         label="Temperature (C)"
         name="temperature"
-        type="number"
-        inputProps={{
-          step: '0.1',
+        type="text"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        fullWidth
+        sx={{
+          marginY: 1,
         }}
+      />
+
+      <TextField
+        value={brew.brewTime}
+        onChange={(e) =>
+          setBrew((current) => ({
+            ...current,
+            brewTime: e.target.value,
+          }))
+        }
+        label="Brew Time (s)"
+        name="brew-time"
+        type="text"
+        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
         fullWidth
         sx={{
           marginY: 1,
@@ -113,7 +126,7 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         onChange={(e) =>
           setBrew((current) => ({
             ...current,
-            notes: e.currentTarget.value,
+            notes: e.target.value,
           }))
         }
         label="Notes"
@@ -130,14 +143,17 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
         id="tags"
         value={brew.tags}
         freeSolo
-        onChange={(e, newValue) =>
+        onChange={(e, newValue) => {
           setBrew((current) => ({
             ...current,
             tags: newValue,
-          }))
-        }
+          }));
+        }}
         options={['Sweet', 'Bitter']}
         renderInput={(params) => <TextField {...params} label="Tags" />}
+        sx={{
+          marginY: 1,
+        }}
       />
       <Rating
         name="rating"
@@ -146,7 +162,7 @@ const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
           setBrew((current) => ({ ...current, rating: newValue ?? 0 }));
         }}
         sx={{
-          marginY: 1,
+          marginBottom: 1,
         }}
       />
     </Box>

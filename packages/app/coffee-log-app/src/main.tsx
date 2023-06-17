@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom/client';
 import { initializeApp } from 'firebase/app';
 import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import App from './App/App';
+import { connectFirestoreEmulator, getFirestore } from '@firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBNIKoHyXp1gCDXPAdhzsQL1MJoTAAGxUA',
@@ -19,7 +20,9 @@ const app = initializeApp(firebaseConfig);
 
 if (process.env.NODE_ENV === 'development') {
   const auth = getAuth(app);
+  const firestore = getFirestore(app);
   connectAuthEmulator(auth, 'http://localhost:9099');
+  connectFirestoreEmulator(firestore, 'localhost', 8080);
 }
 
 const root = ReactDOM.createRoot(
