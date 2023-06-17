@@ -1,12 +1,7 @@
 import {
-  Box,
   Button,
-  IconButton,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListSubheader,
+  Paper,
   SpeedDial,
   SpeedDialAction,
   SpeedDialIcon,
@@ -21,6 +16,7 @@ import { useBrews } from '../../common/hooks';
 import BrewListItem from './BrewListItem';
 import BrewDetailsDialog from './BrewDetailsDialog';
 import { BrewWithID } from '../../common/models';
+import { Container } from '@mui/system';
 
 interface DashboardProps {
   user: User;
@@ -49,26 +45,26 @@ const Dashboard = ({ user }: DashboardProps) => {
   };
 
   return (
-    <Box>
+    <Container sx={{ paddingTop: 2 }}>
       <Typography variant="h2" component="h1">
-        Welcome to Coffee Log {user.displayName}!
+        Coffee Log
       </Typography>
       <Typography mb={1}>Account: {user.email}</Typography>
       <Button onClick={onSignOut} variant="contained">
         Sign Out
       </Button>
-      <List
-        dense={true}
-        subheader={<ListSubheader>Recent Brews</ListSubheader>}
-      >
-        {brews.map((brew) => (
-          <BrewListItem
-            brew={brew}
-            onClick={() => onBrewClick(brew)}
-            key={brew.id}
-          />
-        ))}
-      </List>
+      <Paper sx={{ padding: 1, marginTop: 1 }}>
+        <Typography variant="h4">Recent Brews</Typography>
+        <List dense={true}>
+          {brews.map((brew) => (
+            <BrewListItem
+              brew={brew}
+              onClick={() => onBrewClick(brew)}
+              key={brew.id}
+            />
+          ))}
+        </List>
+      </Paper>
       <SpeedDial
         ariaLabel={'Coffee Log Speed Dial'}
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
@@ -89,7 +85,7 @@ const Dashboard = ({ user }: DashboardProps) => {
         onClose={() => setOpenBrewDetails(undefined)}
         brew={openBrewDetails}
       />
-    </Box>
+    </Container>
   );
 };
 

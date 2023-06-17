@@ -5,7 +5,9 @@ import {
   collection,
   doc,
   getFirestore,
+  limit,
   onSnapshot,
+  orderBy,
   query,
   where,
 } from '@firebase/firestore';
@@ -27,7 +29,9 @@ const useBrews = (): useBrewsResult => {
     if (auth.currentUser) {
       const brewsQuery = query(
         collection(db, FirestoreCollections.Brews),
-        where('uid', '==', auth.currentUser?.uid)
+        where('uid', '==', auth.currentUser?.uid),
+        orderBy('date', 'desc'),
+        limit(10)
       );
 
       unsub = onSnapshot(brewsQuery, (snapshot) => {
