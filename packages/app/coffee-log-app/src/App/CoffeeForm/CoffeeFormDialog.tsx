@@ -7,10 +7,11 @@ import {
   DialogContentText,
   DialogTitle,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CoffeeForm from './CoffeeForm';
 import {
   Brew,
+  BrewForm,
   FirestoreCollections,
   defaultBrewForm,
 } from '../../common/models';
@@ -25,11 +26,22 @@ import { getAuth } from '@firebase/auth';
 interface CoffeeFormDialogProps {
   open: boolean;
   onClose: VoidFunction;
+  initialFormState?: BrewForm;
 }
 
-const CoffeeFormDialog = ({ open, onClose }: CoffeeFormDialogProps) => {
+const CoffeeFormDialog = ({
+  open,
+  onClose,
+  initialFormState,
+}: CoffeeFormDialogProps) => {
   const [brewFormState, setBrewFormState] = useState(defaultBrewForm);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (initialFormState) {
+      setBrewFormState(initialFormState);
+    }
+  }, [initialFormState]);
 
   const onSave = async () => {
     setLoading(true);
