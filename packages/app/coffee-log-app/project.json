@@ -17,6 +17,14 @@
         "tsConfig": "packages/app/coffee-log-app/tsconfig.app.json",
         "assets": [
           "packages/app/coffee-log-app/src/favicon.ico",
+          "packages/app/coffee-log-app/src/android-chrome-192x192.png",
+          "packages/app/coffee-log-app/src/android-chrome-512x512.png",
+          "packages/app/coffee-log-app/src/apple-touch-icon.png",
+          "packages/app/coffee-log-app/src/favicon-16x16.png",
+          "packages/app/coffee-log-app/src/favicon-32x32.png",
+          "packages/app/coffee-log-app/src/manifest.json",
+          "packages/app/coffee-log-app/src/robots.txt",
+          "packages/app/coffee-log-app/src/site.webmanifest",
           "packages/app/coffee-log-app/src/assets"
         ],
         "styles": ["packages/app/coffee-log-app/src/styles.scss"],
