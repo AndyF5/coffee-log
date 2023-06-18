@@ -1,6 +1,8 @@
 import {
+  Button,
   Chip,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
@@ -17,9 +19,15 @@ interface BrewDetailsDialogProps {
   open: boolean;
   onClose: VoidFunction;
   brew: Brew | undefined;
+  onBrewRepeat: VoidFunction;
 }
 
-const BrewDetailsDialog = ({ open, onClose, brew }: BrewDetailsDialogProps) => {
+const BrewDetailsDialog = ({
+  open,
+  onClose,
+  brew,
+  onBrewRepeat,
+}: BrewDetailsDialogProps) => {
   return brew ? (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle variant="h4">
@@ -71,6 +79,9 @@ const BrewDetailsDialog = ({ open, onClose, brew }: BrewDetailsDialogProps) => {
 
         <DialogContentText paddingTop={2}>{brew.notes}</DialogContentText>
       </DialogContent>
+      <DialogActions>
+        <Button onClick={onBrewRepeat}>Repeat Brew</Button>
+      </DialogActions>
     </Dialog>
   ) : null;
 };

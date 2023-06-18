@@ -12,9 +12,9 @@ import { User, getAuth } from 'firebase/auth';
 import React, { useState } from 'react';
 import CoffeeFormDialog from '../CoffeeForm/CoffeeFormDialog';
 import { useBrews } from '../../common/hooks';
-import BrewListItem from './BrewListItem';
-import BrewDetailsDialog from './BrewDetailsDialog';
-import { BrewWithID } from '../../common/models';
+import BrewListItem from '../BrewDetails/BrewListItem';
+import BrewDetailsDialog from '../BrewDetails/BrewDetailsDialog';
+import { BrewForm, BrewWithID } from '../../common/models';
 import { Container } from '@mui/system';
 
 interface DashboardProps {
@@ -26,6 +26,9 @@ const Dashboard = ({ user }: DashboardProps) => {
   const [openBrewDetails, setOpenBrewDetails] = useState<
     BrewWithID | undefined
   >(undefined);
+  const [initialFormState, setInitialFormState] = useState<
+    BrewForm | undefined
+  >(undefined);
 
   const { brews } = useBrews();
 
@@ -36,11 +39,34 @@ const Dashboard = ({ user }: DashboardProps) => {
   };
 
   const onSpeedDialCoffee = () => {
+    setInitialFormState(undefined);
     setOpenCoffeeLogger(true);
   };
 
   const onBrewClick = (brew: BrewWithID) => {
     setOpenBrewDetails(brew);
+  };
+
+  const onBrewRepeat = () => {
+    if (openBrewDetails) {
+      const { id, notes, tags, rating, ...newBrewForm } = openBrewDetails;
+
+      setInitialFormState({
+        ...newBrewForm,
+        coffeeAmount: newBrewForm.coffeeAmount.toString(),
+        grindSetting: newBrewForm.grindSetting.toString(),
+        waterAmount: newBrewForm.waterAmount.toString(),
+        temperature: newBrewForm.temperature.toString(),
+        brewTime: newBrewForm.brewTime.toString(),
+        notes: '',
+        tags: [],
+        rating: 3.0,
+      });
+
+      setOpenBrewDetails(undefined);
+
+      setOpenCoffeeLogger(true);
+    }
   };
 
   return (
@@ -78,11 +104,13 @@ const Dashboard = ({ user }: DashboardProps) => {
       <CoffeeFormDialog
         open={openCoffeeLogger}
         onClose={() => setOpenCoffeeLogger(false)}
+        initialFormState={initialFormState}
       />
       <BrewDetailsDialog
         open={!!openBrewDetails}
         onClose={() => setOpenBrewDetails(undefined)}
         brew={openBrewDetails}
+        onBrewRepeat={onBrewRepeat}
       />
     </Container>
   );
