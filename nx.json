@@ -12,7 +12,8 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputs": ["{workspaceRoot}/dist"]
     },
     "lint": {
       "inputs": [
