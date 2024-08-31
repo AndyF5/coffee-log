@@ -49,3 +49,4 @@ firestore-debug.log
 pubsub-debug.log
 ui-debug.log
 
+.nx/
