@@ -1,11 +1,10 @@
 {
   "firestore": {
-    "rules": "packages/server/coffee-log-server/firestore.rules",
-    "indexes": "packages/server/coffee-log-server/firestore.indexes.json"
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "target": "coffee-log",
-    "public": "dist/packages/app/coffee-log-app",
+    "public": "dist",
     "rewrites": [
       {
         "source": "**",
@@ -14,10 +13,8 @@
     ]
   },
   "functions": {
-    "codebase": "coffee-log-server",
-    "predeploy": ["npx nx build coffee-log"],
-    "runtime": "nodejs16",
-    "source": "dist/packages/server/coffee-log-server"
+    "source": "functions",
+    "runtime": "nodejs20"
   },
   "emulators": {
     "auth": {

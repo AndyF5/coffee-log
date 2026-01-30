@@ -8,22 +8,16 @@ env:
   FIREBASE_TOKEN: ${{ secrets.FIRBASE_TOKEN }}
 
 jobs:
-  main:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+          node-version: '20'
           cache: 'npm'
-      - uses: nrwl/nx-set-shas@v3
       - run: npm ci
-
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --configuration=ci
-      - run: npx nx affected --target=build --parallel=3 --skip-nx-cache
+      - run: npm run build
+      - run: npm test -- --run
       - run: npx firebase deploy --only firestore:rules
       - run: npx firebase deploy --only hosting

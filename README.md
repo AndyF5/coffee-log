@@ -2,22 +2,52 @@
 
 Application for logging coffee brewing.
 
-# Getting Started
+## Getting Started
 
-Install dependencies
+Install dependencies:
 
 ```
 npm install
 ```
 
-Run the emulator
+## Development
+
+Start the Firebase emulators (Auth & Firestore):
 
 ```
-nx emulate coffee-log-server
+firebase emulators:start
 ```
 
-Run the app
+In a separate terminal, start the dev server:
 
 ```
-nx run coffee-log-app:serve
+npm run dev
+```
+
+The app will be available at http://localhost:5173
+
+## Other Commands
+
+Run tests:
+
+```
+npm test
+```
+
+Build for production:
+
+```
+npm run build
+```
+
+Preview production build:
+
+```
+npm run preview
+```
+
+Deploy to Firebase:
+
+```
+firebase deploy
 ```
