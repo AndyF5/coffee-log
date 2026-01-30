@@ -4,12 +4,12 @@ on:
     branches:
       - main
 
-env:
-  FIREBASE_TOKEN: ${{ secrets.FIRBASE_TOKEN }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,5 +19,8 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm test -- --run
+      - uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
       - run: npx firebase deploy --only firestore:rules
       - run: npx firebase deploy --only hosting
