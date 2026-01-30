@@ -49,7 +49,7 @@ const Dashboard = ({ user }: DashboardProps) => {
 
   const onBrewRepeat = () => {
     if (openBrewDetails) {
-      const { id, notes, tags, rating, ...newBrewForm } = openBrewDetails;
+      const { id: _id, notes: _notes, tags: _tags, rating: _rating, ...newBrewForm } = openBrewDetails;
 
       setInitialFormState({
         ...newBrewForm,
