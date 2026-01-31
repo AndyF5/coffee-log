@@ -28,7 +28,7 @@ const Authentication = () => {
 
   return (
     <Grid container>
-      <Grid item>
+      <Grid size={12}>
         <Button onClick={onSignInWithGoogle} variant="outlined">
           Continue with Google
         </Button>
