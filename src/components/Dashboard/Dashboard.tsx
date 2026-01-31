@@ -11,11 +11,12 @@ import CoffeeIcon from '@mui/icons-material/Coffee';
 import { User, getAuth } from 'firebase/auth';
 import { useState } from 'react';
 import CoffeeFormDialog from '../CoffeeForm/CoffeeFormDialog';
-import { useBrews } from '../../hooks';
+import { useBrews, useNotification } from '../../hooks';
 import BrewListItem from '../BrewDetails/BrewListItem';
 import BrewDetailsDialog from '../BrewDetails/BrewDetailsDialog';
 import { BrewForm, BrewWithID } from '../../models';
 import { Container } from '@mui/system';
+import { updateBrew, deleteBrew } from '../../services/brewService';
 
 interface DashboardProps {
   user: User;
@@ -31,6 +32,7 @@ const Dashboard = ({ user }: DashboardProps) => {
   >(undefined);
 
   const { brews } = useBrews();
+  const { showNotification } = useNotification();
 
   const onSignOut = () => {
     const auth = getAuth();
@@ -66,6 +68,28 @@ const Dashboard = ({ user }: DashboardProps) => {
       setOpenBrewDetails(undefined);
 
       setOpenCoffeeLogger(true);
+    }
+  };
+
+  const handleBrewUpdate = async (brewId: string, brewForm: BrewForm) => {
+    try {
+      await updateBrew(brewId, brewForm);
+      showNotification('Brew updated successfully!', 'success');
+    } catch (error) {
+      console.error('Failed to update brew:', error);
+      showNotification('Failed to update brew. Please try again.', 'error');
+      throw error;
+    }
+  };
+
+  const handleBrewDelete = async (brewId: string) => {
+    try {
+      await deleteBrew(brewId);
+      showNotification('Brew deleted successfully!', 'success');
+    } catch (error) {
+      console.error('Failed to delete brew:', error);
+      showNotification('Failed to delete brew. Please try again.', 'error');
+      throw error;
     }
   };
 
@@ -111,6 +135,8 @@ const Dashboard = ({ user }: DashboardProps) => {
         onClose={() => setOpenBrewDetails(undefined)}
         brew={openBrewDetails}
         onBrewRepeat={onBrewRepeat}
+        onBrewUpdate={handleBrewUpdate}
+        onBrewDelete={handleBrewDelete}
       />
     </Container>
   );

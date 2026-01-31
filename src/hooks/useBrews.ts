@@ -33,11 +33,17 @@ const useBrews = (): useBrewsResult => {
         limit(10)
       );
 
-      unsub = onSnapshot(brewsQuery, (snapshot) => {
-        setBrews(
-          snapshot.docs.map((doc) => ({ ...(doc.data() as Brew), id: doc.id }))
-        );
-      });
+      unsub = onSnapshot(
+        brewsQuery,
+        (snapshot) => {
+          setBrews(
+            snapshot.docs.map((doc) => ({ ...(doc.data() as Brew), id: doc.id }))
+          );
+        },
+        (error) => {
+          console.error('Error fetching brews:', error);
+        }
+      );
     }
 
     return () => unsub && unsub();

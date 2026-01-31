@@ -8,6 +8,8 @@ import {
   DialogTitle,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import CoffeeForm from './CoffeeForm';
 import {
   Brew,
@@ -22,6 +24,8 @@ import {
   getFirestore,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { brewFormSchema } from '../../utils/validation';
+import { useNotification } from '../../hooks';
 
 interface CoffeeFormDialogProps {
   open: boolean;
@@ -34,64 +38,89 @@ const CoffeeFormDialog = ({
   onClose,
   initialFormState,
 }: CoffeeFormDialogProps) => {
-  const [brewFormState, setBrewFormState] = useState(defaultBrewForm);
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+
+  const methods = useForm<BrewForm>({
+    resolver: yupResolver(brewFormSchema),
+    defaultValues: defaultBrewForm,
+    mode: 'onSubmit',
+  });
 
   useEffect(() => {
     if (initialFormState) {
-      setBrewFormState(initialFormState);
+      methods.reset(initialFormState);
     }
-  }, [initialFormState]);
+  }, [initialFormState, methods]);
 
-  const onSave = async () => {
+  useEffect(() => {
+    if (!open) {
+      methods.reset(defaultBrewForm);
+    }
+  }, [open, methods]);
+
+  const onSave = async (data: BrewForm) => {
     setLoading(true);
 
     const db = getFirestore();
-
     const auth = getAuth();
 
     if (auth.currentUser) {
       const brewData: Brew = {
-        ...brewFormState,
-        brewMethod: brewFormState.brewMethod ?? '',
-        coffeeAmount: parseFloat(brewFormState.coffeeAmount),
-        grindSetting: parseFloat(brewFormState.grindSetting),
-        waterAmount: parseFloat(brewFormState.waterAmount),
-        temperature: parseFloat(brewFormState.temperature),
-        brewTime: parseFloat(brewFormState.brewTime),
+        ...data,
+        brewMethod: data.brewMethod ?? '',
+        coffeeAmount: parseFloat(data.coffeeAmount),
+        grindSetting: parseFloat(data.grindSetting),
+        waterAmount: parseFloat(data.waterAmount),
+        temperature: parseFloat(data.temperature),
+        brewTime: parseFloat(data.brewTime),
         date: Timestamp.now(),
       };
 
-      await addDoc(collection(db, FirestoreCollections.Brews), {
-        ...brewData,
-        uid: auth.currentUser?.uid,
-      });
+      try {
+        await addDoc(collection(db, FirestoreCollections.Brews), {
+          ...brewData,
+          uid: auth.currentUser?.uid,
+        });
 
-      setBrewFormState(defaultBrewForm);
-
-      onClose();
+        showNotification('Brew saved successfully!', 'success');
+        methods.reset(defaultBrewForm);
+        onClose();
+      } catch (error) {
+        console.error('Failed to save brew:', error);
+        showNotification('Failed to save brew. Please try again.', 'error');
+      }
     }
 
     setLoading(false);
   };
 
+  const handleClose = () => {
+    methods.reset(defaultBrewForm);
+    onClose();
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Coffee Logger</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Enter your coffee information here!
-        </DialogContentText>
-        <CoffeeForm brew={brewFormState} setBrew={setBrewFormState} />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()} disabled={loading}>
-          Cancel
-        </Button>
-        <Button onClick={() => onSave()} disabled={loading}>
-          {loading ? <CircularProgress /> : 'Save'}
-        </Button>
-      </DialogActions>
+    <Dialog open={open} onClose={handleClose}>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSave)}>
+          <DialogTitle>Coffee Logger</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Enter your coffee information here!
+            </DialogContentText>
+            <CoffeeForm />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} disabled={loading}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? <CircularProgress size={24} /> : 'Save'}
+            </Button>
+          </DialogActions>
+        </form>
+      </FormProvider>
     </Dialog>
   );
 };

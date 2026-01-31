@@ -8,6 +8,8 @@ import {
   createTheme,
   responsiveFontSizes,
 } from '@mui/material';
+import { NotificationProvider } from './context/NotificationContext';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 export function App() {
   let theme = createTheme({
@@ -26,7 +28,11 @@ export function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {!user ? <LandingPage /> : <Dashboard user={user} />}
+      <ErrorBoundary>
+        <NotificationProvider>
+          {!user ? <LandingPage /> : <Dashboard user={user} />}
+        </NotificationProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }

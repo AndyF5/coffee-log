@@ -1,169 +1,186 @@
 import { Autocomplete, Box, Rating, TextField } from '@mui/material';
-import { SetStateAction } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { BrewForm } from '../../models';
 
-interface CoffeeFormProps {
-  brew: BrewForm;
-  setBrew: React.Dispatch<SetStateAction<BrewForm>>;
-}
+const CoffeeForm = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<BrewForm>();
 
-const CoffeeForm = ({ brew, setBrew }: CoffeeFormProps) => {
   return (
     <Box>
-      <Autocomplete
-        id="tags"
-        value={brew.brewMethod}
-        freeSolo
-        onChange={(_e, newValue) =>
-          setBrew((current) => ({ ...current, brewMethod: newValue }))
-        }
-        options={['Espresso', 'Filter']}
-        renderInput={(params) => <TextField {...params} label="Brew Method" />}
-        sx={{
-          marginY: 1,
-        }}
-      />
-      <TextField
-        value={brew.coffee}
-        onChange={(e) =>
-          setBrew((current) => ({ ...current, coffee: e.target.value }))
-        }
-        label="Coffee"
-        name="coffee"
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
-      />
-      <TextField
-        value={brew.coffeeAmount}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            coffeeAmount: e.target.value,
-          }))
-        }
-        label="Amount of Coffee (grams)"
-        name="coffee-amount"
-        type="text"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
-      />
-      <TextField
-        value={brew.grindSetting}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            grindSetting: e.target.value,
-          }))
-        }
-        label="Grind Setting"
-        name="grind-setting"
-        type="text"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
-      />
-      <TextField
-        value={brew.waterAmount}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            waterAmount: e.target.value,
-          }))
-        }
-        label="Amount of Water (ml/grams)"
-        name="water-amount"
-        type="text"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
-      />
-      <TextField
-        value={brew.temperature}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            temperature: e.target.value,
-          }))
-        }
-        label="Temperature (&#176;C)"
-        name="temperature"
-        type="text"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
+      <Controller
+        name="brewMethod"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            id="brewMethod"
+            value={value}
+            freeSolo
+            onChange={(_e, newValue) => onChange(newValue)}
+            onInputChange={(_e, newValue, reason) => {
+              if (reason === 'input') {
+                onChange(newValue);
+              }
+            }}
+            options={['Espresso', 'Filter']}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Brew Method"
+                error={!!errors.brewMethod}
+                helperText={errors.brewMethod?.message}
+              />
+            )}
+            sx={{ marginY: 1 }}
+          />
+        )}
       />
 
-      <TextField
-        value={brew.brewTime}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            brewTime: e.target.value,
-          }))
-        }
-        label="Brew Time (s)"
-        name="brew-time"
-        type="text"
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-        fullWidth
-        sx={{
-          marginY: 1,
-        }}
+      <Controller
+        name="coffee"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Coffee"
+            fullWidth
+            error={!!errors.coffee}
+            helperText={errors.coffee?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
       />
-      <TextField
-        value={brew.notes}
-        onChange={(e) =>
-          setBrew((current) => ({
-            ...current,
-            notes: e.target.value,
-          }))
-        }
-        label="Notes"
+
+      <Controller
+        name="coffeeAmount"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Amount of Coffee (grams)"
+            type="text"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            error={!!errors.coffeeAmount}
+            helperText={errors.coffeeAmount?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
+      />
+
+      <Controller
+        name="grindSetting"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Grind Setting"
+            type="text"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            error={!!errors.grindSetting}
+            helperText={errors.grindSetting?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
+      />
+
+      <Controller
+        name="waterAmount"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Amount of Water (ml/grams)"
+            type="text"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            error={!!errors.waterAmount}
+            helperText={errors.waterAmount?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
+      />
+
+      <Controller
+        name="temperature"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Temperature (&#176;C)"
+            type="text"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            error={!!errors.temperature}
+            helperText={errors.temperature?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
+      />
+
+      <Controller
+        name="brewTime"
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Brew Time (s)"
+            type="text"
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            error={!!errors.brewTime}
+            helperText={errors.brewTime?.message}
+            sx={{ marginY: 1 }}
+          />
+        )}
+      />
+
+      <Controller
         name="notes"
-        multiline
-        fullWidth
-        rows={3}
-        sx={{
-          marginY: 1,
-        }}
+        control={control}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Notes"
+            multiline
+            fullWidth
+            rows={3}
+            sx={{ marginY: 1 }}
+          />
+        )}
       />
-      <Autocomplete
-        multiple
-        id="tags"
-        value={brew.tags}
-        freeSolo
-        onChange={(_e, newValue) => {
-          setBrew((current) => ({
-            ...current,
-            tags: newValue,
-          }));
-        }}
-        options={['Sweet', 'Bitter']}
-        renderInput={(params) => <TextField {...params} label="Tags" />}
-        sx={{
-          marginY: 1,
-        }}
+
+      <Controller
+        name="tags"
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            multiple
+            id="tags"
+            value={value}
+            freeSolo
+            onChange={(_e, newValue) => onChange(newValue)}
+            options={['Sweet', 'Bitter']}
+            renderInput={(params) => <TextField {...params} label="Tags" />}
+            sx={{ marginY: 1 }}
+          />
+        )}
       />
-      <Rating
+
+      <Controller
         name="rating"
-        value={brew.rating}
-        onChange={(_event, newValue) => {
-          setBrew((current) => ({ ...current, rating: newValue ?? 0 }));
-        }}
-        sx={{
-          marginBottom: 1,
-        }}
+        control={control}
+        render={({ field: { onChange, value } }) => (
+          <Rating
+            name="rating"
+            value={value}
+            onChange={(_event, newValue) => onChange(newValue ?? 0)}
+            sx={{ marginBottom: 1 }}
+          />
+        )}
       />
     </Box>
   );
