@@ -144,6 +144,25 @@ describe('BrewDetailsDialog', () => {
     expect(screen.getByRole('button', { name: /Cancel/i })).toBeDefined();
   });
 
+  it('should not trigger update when Edit button is clicked', () => {
+    const brew = createMockBrewWithID();
+
+    renderWithProviders(
+      <BrewDetailsDialog
+        open={true}
+        onClose={mockOnClose}
+        brew={brew}
+        onBrewRepeat={mockOnBrewRepeat}
+        onBrewUpdate={mockOnBrewUpdate}
+      />
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Edit/i }));
+
+    // Clicking Edit should only switch to edit mode, not trigger an update
+    expect(mockOnBrewUpdate).not.toHaveBeenCalled();
+  });
+
   it('should exit edit mode when Cancel is clicked', () => {
     const brew = createMockBrewWithID();
 

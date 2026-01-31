@@ -128,4 +128,36 @@ describe('CoffeeForm', () => {
     // MUI Rating uses radio inputs with name="rating"
     expect(screen.getAllByRole('radio').length).toBeGreaterThan(0);
   });
+
+  describe('numeric input patterns', () => {
+    it('should accept decimal values in numeric fields', () => {
+      renderCoffeeForm();
+
+      const numericFields = [
+        { label: /Amount of Coffee/i, value: '18.5' },
+        { label: /Grind Setting/i, value: '10.5' },
+        { label: /Amount of Water/i, value: '36.5' },
+        { label: /Temperature/i, value: '93.5' },
+        { label: /Brew Time/i, value: '30.5' },
+      ];
+
+      for (const { label, value } of numericFields) {
+        const input = screen.getByLabelText(label) as HTMLInputElement;
+        fireEvent.change(input, { target: { value } });
+
+        expect(input.value).toBe(value);
+        expect(input.validity.patternMismatch).toBe(false);
+      }
+    });
+
+    it('should accept comma as decimal separator', () => {
+      renderCoffeeForm();
+
+      const input = screen.getByLabelText(/Amount of Coffee/i) as HTMLInputElement;
+      fireEvent.change(input, { target: { value: '18,5' } });
+
+      expect(input.value).toBe('18,5');
+      expect(input.validity.patternMismatch).toBe(false);
+    });
+  });
 });

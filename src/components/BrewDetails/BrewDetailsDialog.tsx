@@ -123,93 +123,90 @@ const BrewDetailsDialog = ({
   return brew ? (
     <>
       <Dialog open={open} onClose={handleClose}>
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleSaveEdit)}>
-            <DialogTitle variant="h4">
-              {brew.coffee} | {brew.brewMethod}
-            </DialogTitle>
-            <DialogContent>
-              {isEditing ? (
+        <DialogTitle variant="h4">
+          {brew.coffee} | {brew.brewMethod}
+        </DialogTitle>
+        {isEditing ? (
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(handleSaveEdit)}>
+              <DialogContent>
                 <CoffeeForm coffeeOptions={coffeeNames} />
-              ) : (
-                <>
-                  <DialogContentText>
-                    {brew.date.toDate().toLocaleString([], {
-                      year: 'numeric',
-                      month: 'long',
-                      day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button type="button" onClick={handleCancelEdit} disabled={loading}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={loading}>
+                  {loading ? <CircularProgress size={24} /> : 'Save'}
+                </Button>
+              </DialogActions>
+            </form>
+          </FormProvider>
+        ) : (
+          <>
+            <DialogContent>
+              <DialogContentText>
+                {brew.date.toDate().toLocaleString([], {
+                  year: 'numeric',
+                  month: 'long',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </DialogContentText>
 
-                  <Rating readOnly value={brew.rating} />
+              <Rating readOnly value={brew.rating} />
 
-                  <Stack py={1} direction="row" spacing={1}>
-                    {brew.tags.map((tag) => (
-                      <Chip label={tag} key={tag} />
-                    ))}
-                  </Stack>
+              <Stack py={1} direction="row" spacing={1}>
+                {brew.tags.map((tag) => (
+                  <Chip label={tag} key={tag} />
+                ))}
+              </Stack>
 
-                  <Table size="small">
-                    <TableBody>
-                      <TableRow>
-                        <TableCell component="th">Amount of coffee</TableCell>
-                        <TableCell>{brew.coffeeAmount} g</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th">Grind Setting</TableCell>
-                        <TableCell>{brew.grindSetting}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th">Water Amount</TableCell>
-                        <TableCell>{brew.waterAmount} g</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th">Temperature</TableCell>
-                        <TableCell>{brew.temperature} &#176;C</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell component="th">Brew Time</TableCell>
-                        <TableCell>{brew.brewTime} s</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+              <Table size="small">
+                <TableBody>
+                  <TableRow>
+                    <TableCell component="th">Amount of coffee</TableCell>
+                    <TableCell>{brew.coffeeAmount} g</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Grind Setting</TableCell>
+                    <TableCell>{brew.grindSetting}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Water Amount</TableCell>
+                    <TableCell>{brew.waterAmount} g</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Temperature</TableCell>
+                    <TableCell>{brew.temperature} &#176;C</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell component="th">Brew Time</TableCell>
+                    <TableCell>{brew.brewTime} s</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
 
-                  <DialogContentText paddingTop={2}>{brew.notes}</DialogContentText>
-                </>
-              )}
+              <DialogContentText paddingTop={2}>{brew.notes}</DialogContentText>
             </DialogContent>
             <DialogActions>
-              {isEditing ? (
-                <>
-                  <Button onClick={handleCancelEdit} disabled={loading}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={loading}>
-                    {loading ? <CircularProgress size={24} /> : 'Save'}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {onBrewDelete && (
-                    <Button onClick={handleDeleteClick} color="error" disabled={loading}>
-                      Delete
-                    </Button>
-                  )}
-                  {onBrewUpdate && (
-                    <Button onClick={handleEdit} disabled={loading}>
-                      Edit
-                    </Button>
-                  )}
-                  <Button onClick={onBrewRepeat} disabled={loading}>
-                    Repeat Brew
-                  </Button>
-                </>
+              {onBrewDelete && (
+                <Button onClick={handleDeleteClick} color="error" disabled={loading}>
+                  Delete
+                </Button>
               )}
+              {onBrewUpdate && (
+                <Button onClick={handleEdit} disabled={loading}>
+                  Edit
+                </Button>
+              )}
+              <Button onClick={onBrewRepeat} disabled={loading}>
+                Repeat Brew
+              </Button>
             </DialogActions>
-          </form>
-        </FormProvider>
+          </>
+        )}
       </Dialog>
 
       <ConfirmDialog

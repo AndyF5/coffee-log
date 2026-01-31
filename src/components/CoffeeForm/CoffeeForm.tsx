@@ -79,7 +79,6 @@ const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
             {...field}
             label="Amount of Coffee (grams)"
             type="text"
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             error={!!errors.coffeeAmount}
             helperText={errors.coffeeAmount?.message}
@@ -96,7 +95,6 @@ const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
             {...field}
             label="Grind Setting"
             type="text"
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             error={!!errors.grindSetting}
             helperText={errors.grindSetting?.message}
@@ -113,7 +111,6 @@ const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
             {...field}
             label="Amount of Water (ml/grams)"
             type="text"
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             error={!!errors.waterAmount}
             helperText={errors.waterAmount?.message}
@@ -130,7 +127,6 @@ const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
             {...field}
             label="Temperature (&#176;C)"
             type="text"
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             error={!!errors.temperature}
             helperText={errors.temperature?.message}
@@ -147,7 +143,6 @@ const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
             {...field}
             label="Brew Time (s)"
             type="text"
-            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             error={!!errors.brewTime}
             helperText={errors.brewTime?.message}
