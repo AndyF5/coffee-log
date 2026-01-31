@@ -21,6 +21,8 @@ import { BrewForm, BrewWithID } from '../../models';
 import CoffeeForm from '../CoffeeForm/CoffeeForm';
 import ConfirmDialog from '../ConfirmDialog/ConfirmDialog';
 import { brewFormSchema } from '../../utils/validation';
+import { useCoffeeNames } from '../../hooks';
+import { upsertCoffee } from '../../services/coffeeService';
 
 interface BrewDetailsDialogProps {
   open: boolean;
@@ -57,6 +59,7 @@ const BrewDetailsDialog = ({
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const { coffeeNames } = useCoffeeNames();
 
   const methods = useForm<BrewForm>({
     resolver: yupResolver(brewFormSchema),
@@ -81,6 +84,12 @@ const BrewDetailsDialog = ({
     setLoading(true);
     try {
       await onBrewUpdate(brew.id, data);
+
+      // Save coffee name for autocomplete
+      if (data.coffee) {
+        await upsertCoffee(data.coffee);
+      }
+
       setIsEditing(false);
       methods.reset();
     } finally {
@@ -121,7 +130,7 @@ const BrewDetailsDialog = ({
             </DialogTitle>
             <DialogContent>
               {isEditing ? (
-                <CoffeeForm />
+                <CoffeeForm coffeeOptions={coffeeNames} />
               ) : (
                 <>
                   <DialogContentText>

@@ -2,7 +2,11 @@ import { Autocomplete, Box, Rating, TextField } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { BrewForm } from '../../models';
 
-const CoffeeForm = () => {
+interface CoffeeFormProps {
+  coffeeOptions?: string[];
+}
+
+const CoffeeForm = ({ coffeeOptions = [] }: CoffeeFormProps) => {
   const {
     control,
     formState: { errors },
@@ -41,13 +45,27 @@ const CoffeeForm = () => {
       <Controller
         name="coffee"
         control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Coffee"
-            fullWidth
-            error={!!errors.coffee}
-            helperText={errors.coffee?.message}
+        render={({ field: { onChange, value } }) => (
+          <Autocomplete
+            id="coffee"
+            value={value}
+            freeSolo
+            onChange={(_e, newValue) => onChange(newValue ?? '')}
+            onInputChange={(_e, newValue, reason) => {
+              if (reason === 'input') {
+                onChange(newValue);
+              }
+            }}
+            options={coffeeOptions}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Coffee"
+                fullWidth
+                error={!!errors.coffee}
+                helperText={errors.coffee?.message}
+              />
+            )}
             sx={{ marginY: 1 }}
           />
         )}

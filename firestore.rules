@@ -6,5 +6,17 @@ service cloud.firestore {
       allow read: if request.auth.uid == resource.data.uid;
       allow write: if request.auth.uid == request.resource.data.uid;
     }
+
+    match /coffees/{coffeeId} {
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.uid;
+      allow create: if request.auth != null
+        && request.auth.uid == request.resource.data.uid;
+      allow update: if request.auth != null
+        && request.auth.uid == resource.data.uid
+        && request.auth.uid == request.resource.data.uid;
+      allow delete: if request.auth != null
+        && request.auth.uid == resource.data.uid;
+    }
   }
 }

@@ -4,6 +4,32 @@ import BrewDetailsDialog from './BrewDetailsDialog';
 import { renderWithProviders } from '../../test/utils/renderHelpers';
 import { createMockBrewWithID } from '../../test/utils/factories';
 
+const mockSetDoc = vi.fn();
+const mockOnSnapshot = vi.fn(() => vi.fn());
+const mockAuth = {
+  currentUser: { uid: 'test-user-id' },
+};
+
+vi.mock('firebase/auth', () => ({
+  getAuth: vi.fn(() => mockAuth),
+}));
+
+vi.mock('firebase/firestore', () => ({
+  getFirestore: vi.fn(),
+  collection: vi.fn(),
+  doc: vi.fn(),
+  setDoc: (...args: unknown[]) => mockSetDoc(...args),
+  query: vi.fn(),
+  where: vi.fn(),
+  orderBy: vi.fn(),
+  onSnapshot: (...args: unknown[]) => mockOnSnapshot(...args),
+  Timestamp: {
+    now: vi.fn(() => ({
+      toDate: () => new Date('2024-01-15T10:30:00Z'),
+    })),
+  },
+}));
+
 describe('BrewDetailsDialog', () => {
   const mockOnClose = vi.fn();
   const mockOnBrewRepeat = vi.fn();

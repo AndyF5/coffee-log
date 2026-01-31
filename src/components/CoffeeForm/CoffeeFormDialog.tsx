@@ -25,7 +25,8 @@ import {
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { brewFormSchema } from '../../utils/validation';
-import { useNotification } from '../../hooks';
+import { useCoffeeNames, useNotification } from '../../hooks';
+import { upsertCoffee } from '../../services/coffeeService';
 
 interface CoffeeFormDialogProps {
   open: boolean;
@@ -40,6 +41,7 @@ const CoffeeFormDialog = ({
 }: CoffeeFormDialogProps) => {
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
+  const { coffeeNames } = useCoffeeNames();
 
   const methods = useForm<BrewForm>({
     resolver: yupResolver(brewFormSchema),
@@ -83,6 +85,11 @@ const CoffeeFormDialog = ({
           uid: auth.currentUser?.uid,
         });
 
+        // Save coffee name for autocomplete
+        if (data.coffee) {
+          await upsertCoffee(data.coffee);
+        }
+
         showNotification('Brew saved successfully!', 'success');
         methods.reset(defaultBrewForm);
         onClose();
@@ -109,7 +116,7 @@ const CoffeeFormDialog = ({
             <DialogContentText>
               Enter your coffee information here!
             </DialogContentText>
-            <CoffeeForm />
+            <CoffeeForm coffeeOptions={coffeeNames} />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} disabled={loading}>
