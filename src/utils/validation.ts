@@ -1,53 +1,57 @@
-import * as yup from 'yup';
+import {
+  object,
+  string,
+  array,
+  number,
+  ObjectSchema,
+  InferType,
+  ValidationError,
+} from 'yup';
 import { BrewForm } from '../models';
 
-export const brewFormSchema = yup.object({
-  brewMethod: yup.string().nullable().required('Brew method is required'),
-  coffee: yup
-    .string()
+export const brewFormSchema = object({
+  brewMethod: string().nullable().required('Brew method is required'),
+  coffee: string()
     .required('Coffee name is required')
     .max(100, 'Coffee name must be 100 characters or less'),
-  coffeeAmount: yup
-    .string()
+  coffeeAmount: string()
     .required('Coffee amount is required')
     .test('valid-range', 'Enter valid amount (0.1-100g)', (value) => {
       const num = parseFloat(value || '');
       return !isNaN(num) && num >= 0.1 && num <= 100;
     }),
-  grindSetting: yup
-    .string()
+  grindSetting: string()
     .required('Grind setting is required')
     .test('valid-range', 'Enter valid setting (0-100)', (value) => {
       const num = parseFloat(value || '');
       return !isNaN(num) && num >= 0 && num <= 100;
     }),
-  waterAmount: yup
-    .string()
+  waterAmount: string()
     .required('Water amount is required')
     .test('valid-range', 'Enter valid amount (1-1000g)', (value) => {
       const num = parseFloat(value || '');
       return !isNaN(num) && num >= 1 && num <= 1000;
     }),
-  temperature: yup
-    .string()
+  temperature: string()
     .required('Temperature is required')
     .test('valid-range', 'Enter valid temp (0-100C)', (value) => {
       const num = parseFloat(value || '');
       return !isNaN(num) && num >= 0 && num <= 100;
     }),
-  brewTime: yup
-    .string()
+  brewTime: string()
     .required('Brew time is required')
     .test('valid-range', 'Enter valid time (1-3600s)', (value) => {
       const num = parseFloat(value || '');
       return !isNaN(num) && num >= 1 && num <= 3600;
     }),
-  notes: yup.string().default(''),
-  tags: yup.array().of(yup.string().required()).default([]),
-  rating: yup.number().min(0).max(5).default(3),
-}) as yup.ObjectSchema<BrewForm>;
+  notes: string().default(''),
+  tags: array().of(string().required()).default([]),
+  rating: number().min(0).max(5).default(3),
+}) as ObjectSchema<BrewForm>;
 
-export type BrewFormSchema = yup.InferType<typeof brewFormSchema>;
+export type BrewFormSchema = InferType<typeof brewFormSchema>;
+
+export { ValidationError };
 
 export interface ValidationErrors {
   brewMethod?: string;
@@ -66,7 +70,7 @@ export async function validateBrewForm(
     await brewFormSchema.validate(form, { abortEarly: false });
     return {};
   } catch (err) {
-    if (err instanceof yup.ValidationError) {
+    if (err instanceof ValidationError) {
       const errors: ValidationErrors = {};
       err.inner.forEach((error) => {
         if (error.path && error.path in errors === false) {
